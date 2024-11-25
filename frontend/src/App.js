@@ -1,20 +1,18 @@
 import React, { useEffect, useState } from 'react';
 
-const App = () => {
+function App() {
     const [message, setMessage] = useState('');
 
     useEffect(() => {
-        fetch('http://localhost:3000/api')
-            .then((res) => res.json())
-            .then((data) => setMessage(data.message));
+        const fetchData = async () => {
+            const response = await window.electronAPI.fetchData({ name: 'Mundo' });
+            setMessage(response.message);
+        };
+
+        fetchData();
     }, []);
 
-    return (
-        <div>
-            <h1>Electron + React + Node.js</h1>
-            <p>{message}</p>
-        </div>
-    );
-};
+    return <div>{message}</div>;
+}
 
 export default App;

@@ -1,7 +1,5 @@
-const { contextBridge } = require('electron');
+const { contextBridge, ipcRenderer } = require('electron');
 
-contextBridge.exposeInMainWorld('api', {
-    send: (channel, data) => {
-        console.log(channel, data);
-    },
+contextBridge.exposeInMainWorld('electronAPI', {
+    fetchData: (args) => ipcRenderer.invoke('fetch-data', args), // Expondo o evento de IPC
 });

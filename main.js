@@ -1,54 +1,37 @@
-const { app, BrowserWindow } = require('electron');
+const { app, BrowserWindow, ipcMain } = require('electron');
 const path = require('path');
-const { spawn } = require('child_process');
+const { someBackendFunction, relatorioAgendamento } = require('./backend/server');
 
 let mainWindow;
-let backendProcess;
 
-const startBackend = () => {
-    const backendPath = app.isPackaged
-        ? path.join(process.resourcesPath, 'backend/server.js')
-        : path.join(__dirname, 'backend/server.js');
-
-    console.log(`Starting backend from: ${backendPath}`); // Log do caminho
-
-    backendProcess = spawn('node', [backendPath], {
-        detached: true,
-        stdio: 'ignore',
-    });
-
-    backendProcess.on('error', (err) => {
-        console.error('Failed to start backend:', err);
-    });
-
-    backendProcess.unref();
-};
-
-
-// Cria a janela principal do Electron
-const createMainWindow = () => {
+const createWindow = () => {
     mainWindow = new BrowserWindow({
         width: 800,
         height: 600,
         webPreferences: {
             preload: path.join(__dirname, 'preload.js'),
+            contextIsolation: true, // Importante para segurança
+            enableRemoteModule: false,
+            nodeIntegration: false,
         },
     });
 
-    // Carrega o frontend
-    mainWindow.loadFile(path.join(__dirname, 'frontend/public/index.html'));
+    mainWindow.loadFile('./frontend/public/index.html');
 };
 
-app.whenReady().then(() => {
-    startBackend(); // Inicia o backend
-    createMainWindow(); // Cria a janela do Electron
+// Evento para processar mensagens do frontend
+ipcMain.handle('fetch-data', async (event, args) => {
+    // Simula uma operação no backend
+    const data = await relatorioAgendamento(args);
+    return data; // Retorna a resposta para o frontend
 });
+
+
+
+app.on('ready', createWindow);
 
 app.on('window-all-closed', () => {
     if (process.platform !== 'darwin') {
-        if (backendProcess) {
-            backendProcess.kill(); // Finaliza o backend ao fechar o aplicativo
-        }
         app.quit();
     }
 });
