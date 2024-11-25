@@ -6,10 +6,15 @@
   "license": "ISC",
   "description": "An Electron app with React and Node.js",
   "dependencies": {
+    "csv-parser": "^3.0.0",
     "electro": "file:",
+    "exceljs": "^4.4.0",
     "express": "^4.21.1",
     "fs": "^0.0.1-security",
+    "json2csv": "^6.0.0-alpha.2",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "selenium-webdriver": "^4.27.0",
+    "xlsx": "^0.18.5"
   }
 }

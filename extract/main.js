@@ -1,19 +1,35 @@
-const { app, BrowserWindow } = require('electron');
+const { app, BrowserWindow, ipcMain } = require('electron');
 const path = require('path');
+const { someBackendFunction, relatorioAgendamento } = require('./backend/server');
+
+let mainWindow;
 
 const createWindow = () => {
-    const win = new BrowserWindow({
+    mainWindow = new BrowserWindow({
         width: 800,
         height: 600,
         webPreferences: {
             preload: path.join(__dirname, 'preload.js'),
+            contextIsolation: true, // Importante para segurança
+            enableRemoteModule: false,
+            nodeIntegration: false,
         },
     });
 
-    win.loadFile('./frontend/public/index.html');
+    mainWindow.loadFile('./frontend/public/index.html');
 };
 
+// Evento para processar mensagens do frontend
+ipcMain.handle('fetch-data', async (event, args) => {
+    // Simula uma operação no backend
+    const data = await relatorioAgendamento(args);
+    return data; // Retorna a resposta para o frontend
+});
+
+
+
 app.on('ready', createWindow);
+
 app.on('window-all-closed', () => {
     if (process.platform !== 'darwin') {
         app.quit();

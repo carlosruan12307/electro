@@ -1,6 +1,6 @@
 const { app, BrowserWindow, ipcMain } = require('electron');
 const path = require('path');
-const { someBackendFunction, relatorioAgendamento } = require('./backend/server');
+const { relatorioAgendamento } = require('./backend/server');
 
 let mainWindow;
 
@@ -12,7 +12,7 @@ const createWindow = () => {
             preload: path.join(__dirname, 'preload.js'),
             contextIsolation: true, // Importante para segurança
             enableRemoteModule: false,
-            nodeIntegration: false,
+            nodeIntegration: true,
         },
     });
 
