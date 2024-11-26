@@ -4,6 +4,9 @@ const { relatorioAgendamento } = require('./backend/server');
 
 let mainWindow;
 
+const { autoUpdater } = require('electron-updater');
+
+
 const createWindow = () => {
     mainWindow = new BrowserWindow({
         width: 800,
@@ -17,8 +20,23 @@ const createWindow = () => {
     });
 
     mainWindow.loadFile('./frontend/public/index.html');
-};
 
+     // Verifica atualizações
+     autoUpdater.checkForUpdatesAndNotify();
+
+     // Listeners para eventos do autoUpdater
+     autoUpdater.on('update-available', () => {
+         mainWindow.webContents.send('update-available');
+     });
+ 
+     autoUpdater.on('update-downloaded', () => {
+         mainWindow.webContents.send('update-downloaded');
+     });
+};
+// Instala a atualização quando o usuário confirma
+ipcMain.on('install-update', () => {
+    autoUpdater.quitAndInstall();
+});
 // Evento para processar mensagens do frontend
 ipcMain.handle('fetch-data', async (event, args) => {
     // Simula uma operação no backend

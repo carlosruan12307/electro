@@ -1,1 +1,6 @@
+npm start
+npm run build
+npm run dist
 npx @electron/asar extract .\dist\win-unpacked\resources\app.asar .\extract\
+npx electron-builder --publish=always
+npx electron-builder --publish always --config.publish.token ${ghToken}
