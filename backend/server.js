@@ -11,6 +11,7 @@ const { waitForDownloadCompletion, waitForAllDownloadsCompletion } = require('./
 const { jsonToXlsx } = require('./scriptsTransformacao/jsonToCSV');
 const { combineXLSXFiles } = require('./scriptsTransformacao/combineCSVFiles');
 const { waitElementThenReturnTextContent } = require('./scriptsAutomacaoGeral/geral');
+const { deleteXLSXFiles } = require('./scriptsAutomacaoGeral/deleteCSVFiles');
 async function relatorioAgendamento(){
     const { Builder, By, Key,until } = require('selenium-webdriver');
     const chrome = require('selenium-webdriver/chrome');
@@ -18,7 +19,7 @@ async function relatorioAgendamento(){
     let options = new chrome.Options();
     options.addArguments('--disable-dev-shm-usage');
     options.setUserPreferences({
-      'download.default_directory': path.join(__dirname,'./relatorioLogs/relatorioAgendamento'),
+      'download.default_directory': path.join(__dirname,'./relatorios/relatorioAgendamento'),
       'download.prompt_for_download': false,
       'download.directory_upgrade': true,
       'safebrowsing_for_trusted_sources_enabled': false,
@@ -77,8 +78,8 @@ async function relatorioAgendamento(){
        var nomeRecurso = await waitElementThenReturnTextContent(".page-header-headings h1",configs)
       //  await waitUntilThenRunScript("a",`[...document.querySelectorAll("a")].filter((e) =>   e.textContent.includes("Respostas"))[0].click()`,configs)
        await waitUntilThenRunScript("a",`[...document.querySelectorAll("button")].filter((e) =>   e.textContent.includes("Download em formato Excel"))[0].click()`,configs)
-       await waitForAllDownloadsCompletion(path.join(__dirname,"./relatorioLogs/relatorioAgendamento"))
-      var pathFile = await getLastDownloadedXLSX(path.join(__dirname,"./relatorioLogs/relatorioAgendamento"))
+       await waitForAllDownloadsCompletion(path.join(__dirname,"./relatorios/relatorioAgendamento"))
+      var pathFile = await getLastDownloadedXLSX(path.join(__dirname,"./relatorios/relatorioAgendamento"))
      
       var excelXLSX = await readExcelFileFullXLSX(pathFile)
         var data = excelXLSX[0]
@@ -114,10 +115,12 @@ const resultado = codigos.join(' ');
         data.data[0] = headers
         data.data = dataWithouSheetName;
       await debugX(data,configs)
-        await jsonToXlsx(data,path.join(__dirname,"./relatorioLogs/relatorioAgendamento/relatorioModificado"),`kek${index}.xlsx`)
+        await jsonToXlsx(data,path.join(__dirname,"./relatorios/relatorioAgendamento/relatorioModificado"),`kek${index}.xlsx`)
        
       }
-      await combineXLSXFiles(path.join(__dirname,"./relatorioLogs/relatorioAgendamento/relatorioModificado"),"C:\\Users\\730550955\\Desktop\\estagio - 2025-1\\estagio1","relatorioAgendamento")
+      await combineXLSXFiles(path.join(__dirname,"./relatorios/relatorioAgendamento/relatorioModificado"),"C:\\Users\\Ruan\\Desktop\\teste-electro","relatorioAgendamento")
+      await deleteXLSXFiles(path.join(__dirname,"./relatorios/relatorioAgendamento/relatorioModificado"))
+      await deleteXLSXFiles(path.join(__dirname,"./relatorios/relatorioAgendamento"))
 }
 
 module.exports={relatorioAgendamento}

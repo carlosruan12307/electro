@@ -1,0 +1,72 @@
+{
+    "name": "electro",
+    "version": "1.0.0",
+    "main": "main.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "start": "electron .",
+        "deploy": "rimraf dist && electron-builder --publish always",
+        "build": "webpack",
+        "dist": "rimraf dist && electron-builder",
+        "clean": "rimraf dist"
+    },
+    "keywords": [],
+    "author": "Seu Nome",
+    "license": "ISC",
+    "description": "An Electron app with React and Node.js",
+    "build": {
+        "asar": false,
+        "extraResources": [
+            {
+                "from": "node_modules/csv-parser",
+                "to": "app/node_modules/csv-parser"
+            }
+        ],
+        "npmRebuild": false,
+        "appId": "com.electro.app",
+        "publish": [
+            {
+              "provider": "github",
+              "owner": "carlosruan12307",
+              "repo": "electro"
+            }
+          ],
+        "files": [
+            "main.js",
+            "preload.js",
+            "frontend/**",
+            "backend/**"
+        ],
+        "directories": {
+            "output": "dist"
+        },
+        "win": {
+            "target": "nsis",
+            "icon": "build/icon.ico"
+        }
+    },
+    "devDependencies": {
+        "@babel/core": "^7.26.0",
+        "@babel/preset-env": "^7.26.0",
+        "@babel/preset-react": "^7.25.9",
+        "babel-loader": "^9.2.1",
+        "electron": "^33.2.0",
+        "electron-builder": "^25.1.8",
+        "webpack": "^5.96.1",
+        "webpack-cli": "^5.1.4",
+        "webpack-dev-server": "^5.1.0"
+    },
+    "dependencies": {
+        "csv-parser": "^3.0.0",
+        "electro": "file:",
+        "electron-updater": "^6.3.9",
+        "exceljs": "^4.4.0",
+        "express": "^4.21.1",
+        "fs": "^0.0.1-security",
+        "json2csv": "^6.0.0-alpha.2",
+        "react": "^18.2.0",
+        "react-dom": "^18.2.0",
+        "selenium-webdriver": "^4.27.0",
+        "xlsx": "^0.18.5"
+    }
+}

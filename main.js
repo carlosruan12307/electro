@@ -21,6 +21,22 @@ const createWindow = () => {
 
     mainWindow.loadFile('./frontend/public/index.html');
 
+autoUpdater.on('error', (error) => {
+    console.error('Erro no autoUpdater:', error);
+});
+
+autoUpdater.on('checking-for-update', () => {
+    console.log('Procurando por atualizações...');
+});
+
+autoUpdater.on('update-available', (info) => {
+    console.log('Atualização disponível:', info);
+});
+
+autoUpdater.on('update-not-available', (info) => {
+    console.log('Nenhuma atualização disponível:', info);
+});
+
      // Verifica atualizações
      autoUpdater.checkForUpdatesAndNotify();
 
@@ -39,11 +55,13 @@ ipcMain.on('install-update', () => {
 });
 // Evento para processar mensagens do frontend
 ipcMain.handle('fetch-data', async (event, args) => {
-    // Simula uma operação no backend
-    const data = await relatorioAgendamento(args);
-    return data; // Retorna a resposta para o frontend
+   return  ""
 });
 
+mainWindow.on('close', (event) => {
+    // Fecha o aplicativo completamente ao clicar no X
+    app.quit();
+});
 
 
 app.on('ready', createWindow);

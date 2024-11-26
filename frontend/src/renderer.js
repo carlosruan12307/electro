@@ -1,13 +1,11 @@
-const { ipcRenderer } = require('electron');
-
-// Escuta eventos de atualização
-ipcRenderer.on('update-available', () => {
+// Usando a API exposta pelo preload.js
+window.electronAPI.onUpdateAvailable(() => {
     alert('Atualização disponível! O download será iniciado em breve.');
 });
 
-ipcRenderer.on('update-downloaded', () => {
+window.electronAPI.onUpdateDownloaded(() => {
     const userResponse = confirm('Atualização baixada. Deseja instalar agora?');
     if (userResponse) {
-        ipcRenderer.send('install-update');
+        window.electronAPI.sendToMain('install-update');
     }
 });
