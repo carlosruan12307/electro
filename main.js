@@ -5,7 +5,11 @@ const { relatorioAgendamento } = require('./backend/server');
 let mainWindow;
 
 const { autoUpdater } = require('electron-updater');
-
+const { loginMoodle, loginMoodleApart } = require('./backend/scriptsAutomacaoGeral/Login');
+require('electron-reload')(__dirname, {
+    electron: require(`${__dirname}/node_modules/electron`),
+    ignored: /node_modules|[\/\\]\./,
+});
 
 const createWindow = () => {
     mainWindow = new BrowserWindow({
@@ -18,9 +22,12 @@ const createWindow = () => {
             nodeIntegration: true,
         },
     });
-
+    // mainWindow.loadURL('http://localhost:3000');
     mainWindow.loadFile('./frontend/public/index.html');
-
+    mainWindow.on('close', (event) => {
+        // Fecha o aplicativo completamente ao clicar no X
+        app.quit();
+    });
 autoUpdater.on('error', (error) => {
     console.error('Erro no autoUpdater:', error);
 });
@@ -55,12 +62,15 @@ ipcMain.on('install-update', () => {
 });
 // Evento para processar mensagens do frontend
 ipcMain.handle('fetch-data', async (event, args) => {
-   return  ""
+    var response =  await relatorioAgendamento();
+   return  response;
 });
 
-mainWindow.on('close', (event) => {
-    // Fecha o aplicativo completamente ao clicar no X
-    app.quit();
+
+ipcMain.handle('login', async (event, args) => {
+   
+    var response =  await loginMoodleApart(args.matricula,args.password);
+   return  response;
 });
 
 

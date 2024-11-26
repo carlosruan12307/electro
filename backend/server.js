@@ -59,12 +59,7 @@ async function relatorioAgendamento(){
       oneTimeClickEdADM();
       const urls = [
         "https://ead.unifor.br/ava/mod/choice/report.php?id=4031704",
-        "https://ead.unifor.br/ava/mod/choice/report.php?id=4031706",
-        "https://ead.unifor.br/ava/mod/choice/report.php?id=4031708",
-        "https://ead.unifor.br/ava/mod/choice/report.php?id=4031710",
-        "https://ead.unifor.br/ava/mod/choice/report.php?id=4031714",
-        "https://ead.unifor.br/ava/mod/choice/report.php?id=4031716",
-        "https://ead.unifor.br/ava/mod/choice/report.php?id=4031686"
+        "https://ead.unifor.br/ava/mod/choice/report.php?id=4031706"
     ];
     
 
@@ -118,9 +113,11 @@ const resultado = codigos.join(' ');
         await jsonToXlsx(data,path.join(__dirname,"./relatorios/relatorioAgendamento/relatorioModificado"),`kek${index}.xlsx`)
        
       }
-      await combineXLSXFiles(path.join(__dirname,"./relatorios/relatorioAgendamento/relatorioModificado"),"C:\\Users\\Ruan\\Desktop\\teste-electro","relatorioAgendamento")
+      await combineXLSXFiles(path.join(__dirname,"./relatorios/relatorioAgendamento/relatorioModificado"),path.join(__dirname,"../Downloads"),"relatorioAgendamento")
       await deleteXLSXFiles(path.join(__dirname,"./relatorios/relatorioAgendamento/relatorioModificado"))
       await deleteXLSXFiles(path.join(__dirname,"./relatorios/relatorioAgendamento"))
+      return "loucura po deu foi certo oh"
 }
+
 
 module.exports={relatorioAgendamento}

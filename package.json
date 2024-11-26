@@ -1,10 +1,13 @@
 {
     "name": "electro",
-    "version": "1.0.0",
+    "version": "1.0.2",
     "main": "main.js",
+    "homepage": "./frontend",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
-        "start": "electron .",
+        "start-react": "react-scripts start",
+        "start-electron": "npm run build && electron .",
+        "start": "concurrently \"npm run start-react\" \"npm run start-electron\"",
         "deploy": "rimraf dist && electron-builder --publish always",
         "build": "webpack",
         "dist": "rimraf dist && electron-builder",
@@ -26,16 +29,17 @@
         "appId": "com.electro.app",
         "publish": [
             {
-              "provider": "github",
-              "owner": "carlosruan12307",
-              "repo": "electro"
+                "provider": "github",
+                "owner": "carlosruan12307",
+                "repo": "electro"
             }
-          ],
+        ],
         "files": [
             "main.js",
             "preload.js",
             "frontend/**",
-            "backend/**"
+            "backend/**",
+            "Downloads/**"
         ],
         "directories": {
             "output": "dist"
@@ -46,12 +50,15 @@
         }
     },
     "devDependencies": {
-        "@babel/core": "^7.26.0",
-        "@babel/preset-env": "^7.26.0",
-        "@babel/preset-react": "^7.25.9",
-        "babel-loader": "^9.2.1",
+        "@babel/core": "^7.22.0",
+        "@babel/preset-env": "^7.22.0",
+        "@babel/preset-react": "^7.22.0",
+        "babel-loader": "^8.2.2",
+        "css-loader": "^7.1.2",
         "electron": "^33.2.0",
         "electron-builder": "^25.1.8",
+        "electron-reload": "^2.0.0-alpha.1",
+        "style-loader": "^4.0.0",
         "webpack": "^5.96.1",
         "webpack-cli": "^5.1.4",
         "webpack-dev-server": "^5.1.0"
@@ -66,6 +73,8 @@
         "json2csv": "^6.0.0-alpha.2",
         "react": "^18.2.0",
         "react-dom": "^18.2.0",
+        "react-router-dom": "^7.0.1",
+        "react-scripts": "^5.0.1",
         "selenium-webdriver": "^4.27.0",
         "xlsx": "^0.18.5"
     }

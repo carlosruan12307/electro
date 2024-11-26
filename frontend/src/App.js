@@ -1,18 +1,14 @@
-import React, { useEffect, useState } from 'react';
+// src/App.js
+import React from 'react';
+import { BrowserRouter as Router, Route, Routes ,Link} from 'react-router-dom';
 
+import Teste from "./components/teste"
+
+import Login from './components/Login/Login';
 function App() {
-    const [message, setMessage] = useState('');
-
-    useEffect(() => {
-        const fetchData = async () => {
-            const response = await window.electronAPI.fetchData({ name: 'Mundo' });
-            setMessage(response.message);
-        };
-
-        fetchData();
-    }, []);
-
-    return <div>{message}</div>;
+  return (
+    <div>AAA</div>
+  );
 }
 
 export default App;
